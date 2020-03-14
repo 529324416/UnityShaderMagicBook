@@ -134,21 +134,11 @@
                 //BasePass和之前计算光照没有差别
 
                 fixed3 albedo = tex2D(_MainTex,i.uv).xyz * _BaseColor.xyz;
-                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
-                //环境光只需要计算一次就行了
 
                 fixed3 diffuse = _LightColor0.xyz * albedo * saturate(dot(lightDir,worldNormal));
 
                 fixed3 halfDir = normalize(viewDir + lightDir);
                 fixed3 specular = _LightColor0.xyz * pow(saturate(dot(halfDir,worldNormal)),_Gloss);
-
-//   #if defined(POINT)
-//   float3 lightCoord=mul(unity_WorldToLight,float4(i.worldpos,1)).xyz;//变换顶点位置到光源空间 
-//   fixed atten=tex2D(_LightTexture0,dot(lightCoord,lightCoord).rr).UNITY_ATTEN_CHANNEL;
-//   #elif defined(SPOT)
-//   float4 lightCoord=mul(unity_WorldToLight,float4(i.worldpos,1));//变换顶点位置到光源空间 
-//   fixed atten=(lightCoord.z>0)*tex2D(_LightTexture0,lightCoord.xy/lightCoord.w+0.5).w*tex2D(_LightTextureB0,dot(lightCoord,lightCoord).rr).UNITY_ATTEN_CHANNEL;
-
 
                 #ifdef USING_DIRECTIONAL_LIGHT
                     //这个宏指令的意思是如果照射该物体的光源是一个平行光
@@ -168,7 +158,7 @@
                     #endif
                 #endif
 
-                return fixed4(ambient + (specular + diffuse) * atten,1.0);
+                return fixed4((specular + diffuse) * atten,1.0);
                 //计算光照衰减
             }
 
