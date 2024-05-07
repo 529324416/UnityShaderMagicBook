@@ -109,6 +109,10 @@ Shader "RedSaw/VolumetricCloud"{
                     float edgeToY = min(_EdgeSoftnessThreshold.y, min(position.y - _BoundsMin.y, _BoundsMax.y - position.y));
                     float softness = edgeToX/ _EdgeSoftnessThreshold.x * edgeToZ / _EdgeSoftnessThreshold.x * edgeToY / _EdgeSoftnessThreshold.y;
 
+                    /* 平方后可以使得衰减更为平滑，但是也造成了边缘显得比较模糊，
+                     * 所以这里看情况可以进行注释 */
+                    softness *= softness;
+
                     density = max(0, density - erode) * _DensityScale * softness * softness;
                     return density;
                 }
