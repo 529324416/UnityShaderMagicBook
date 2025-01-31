@@ -204,7 +204,7 @@
                 
 
                 half3 co = cs + cb * (Tr + inScatteringLight) + caustics;
-                return half4(inScatteringLight, 1);
+                return half4(co, 1);
             }
             
             ENDHLSL
